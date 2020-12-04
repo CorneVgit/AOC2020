@@ -1,7 +1,5 @@
 import fs from 'fs';
 
-main();
-
 function main() {
     const input = fs.readFileSync("data/input_day4.txt").toString("ascii").split("\n");
     const passports = make_passports(input);
@@ -74,3 +72,5 @@ function validate_ecl(key: string) {
 function validate_pid(key: string) {
     return /^[0-9]{9}$/.exec(key) !== null;
 }
+
+main();
