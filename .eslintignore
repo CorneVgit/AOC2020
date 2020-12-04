@@ -1,0 +1,5 @@
+.git
+.vscode
+*.txt
+node_modules
+out
