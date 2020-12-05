@@ -1,4 +1,7 @@
 .vscode
+.idea
 node_modules
 out
 yarn.lock
+*.log
+src/template.ts
