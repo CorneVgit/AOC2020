@@ -2,8 +2,8 @@ import fs from 'fs';
 
 function main() {
     const input = fs.readFileSync("data/input_day5.txt").toString("ascii").split("\n");
+    const seat_ids: number[] = [];
     let highest_seat_id = 0;
-    let seat_ids: number[] = [];
 
     for (const s of input) {
         let row_step = 64;
@@ -31,18 +31,18 @@ function main() {
         }
 
         const seat_id = 8 * row_ub + column_ub;
-
         seat_ids.push(seat_id);
         highest_seat_id = Math.max(seat_id, highest_seat_id);
     }
 
+    console.log(`Highest seat ID: ${highest_seat_id}`);
+
     seat_ids.sort((a, b) => { return a - b; });
+
     for (let index = 1; index < seat_ids.length; index++) {
         if (seat_ids[index - 1] + 2 === seat_ids[index]) {
-            console.log(seat_ids[index - 1] + 1);
-
+            console.log(`My seat ID: ${seat_ids[index - 1] + 1}`);
         }
-
     }
 }
 
