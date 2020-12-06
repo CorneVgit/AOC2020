@@ -20,8 +20,8 @@ function make_passports(input: string[]) {
     const passports: Passport[] = [];
     let passport_raw = "";
 
-    for (const s of input) {
-        if (s === "") {
+    for (const str of input) {
+        if (str === "") {
             const passport: Passport = {};
 
             passport_raw.trim().split(" ").forEach(element => {
@@ -33,7 +33,7 @@ function make_passports(input: string[]) {
             passport_raw = "";
         }
 
-        passport_raw += " " + s;
+        passport_raw += " " + str;
     }
 
     return passports;
