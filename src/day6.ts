@@ -3,7 +3,7 @@ import fs from 'fs';
 function main() {
     const input = fs.readFileSync("data/input_day6.txt").toString("ascii").split("\n");
 
-    let set1 = new Set<string>();
+    let set1 = new Set();
     let set2 = new Set(" ");
     let count1 = 0;
     let count2 = 0;
