@@ -3,28 +3,26 @@ import fs from 'fs';
 function main() {
     const input = fs.readFileSync("data/input_day6.txt").toString("ascii").split("\n");
 
-    let set = new Set<string>();
-    let count = 0;
+    let set1 = new Set<string>();
+    let set2 = new Set(" ");
+    let count1 = 0;
+    let count2 = 0;
 
-    let intersection = " ";
-    let intersect_count = 0;
+    for (const str of input) {
+        if (str === "") {
+            count1 += set1.size;
+            set1 = new Set();
 
-    for (const s of input) {
-        if (s === "") {
-            count += set.size;
-            set.clear();
-
-            intersect_count += intersection.length;
-            intersection = " ";
+            count2 += set2.size;
+            set2 = new Set(" ");
             continue;
         }
 
-        intersection = intersection.includes(" ") ? s : [...intersection].filter(value => s.includes(value)).join("");
-        set = new Set([...s, ...set]);
+        set1 = new Set([...str, ...set1]);
+        set2 = set2.has(" ") ? new Set(str) : new Set([...set2].filter(v => str.includes(v)));
     }
 
-    console.log(count);
-    console.log(intersect_count);
+    console.log(count1, count2);
 }
 
 main();
