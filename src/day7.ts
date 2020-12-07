@@ -2,20 +2,8 @@ import fs from 'fs';
 
 function main() {
     const input = fs.readFileSync("data/input_day7.txt").toString("ascii").split("\n");
-    const bags = new Map<string, Map<string, number>>();
+    const bags = make_bags(input);
     let count = 0;
-
-    for (const s of input) {
-        let bag = "";
-        const contained = new Map<string, number>();
-        for (const m of s.matchAll(/(?<bag>[\w]* [\w]*?)?(?: )(?:bags contain)?(?: )?(?<amount>[\d]+)? (?<contained>[\w]* [\w]*)?/g)) {
-            if (m.groups?.bag) bag = m.groups?.bag;
-            if (m.groups?.contained && m.groups?.amount) {
-                contained.set(m.groups.contained, Number(m.groups.amount));
-            }
-        }
-        if (bag !== "") bags.set(bag, contained);
-    }
 
     for (const bag of bags.keys()) {
         count += Number(has_bag(bags, bag, "shiny gold"));
@@ -24,6 +12,26 @@ function main() {
     console.log(count);
     console.log(count_bags(bags, "shiny gold"));
 
+}
+
+function make_bags(input: string[]) {
+    const bags = new Map<string, Map<string, number>>();
+
+    for (const s of input) {
+        let bag = "";
+        const contained = new Map<string, number>();
+
+        for (const m of s.matchAll(/(?<bag>[\w]* [\w]*?)?(?: )(?:bags contain)?(?: )?(?<amount>[\d]+)? (?<contained>[\w]* [\w]*)?/g)) {
+            if (m.groups?.bag) bag = m.groups?.bag;
+            if (m.groups?.contained && m.groups?.amount) {
+                contained.set(m.groups.contained, Number(m.groups.amount));
+            }
+        }
+
+        bags.set(bag, contained);
+    }
+
+    return bags;
 }
 
 function has_bag(bags: Map<string, Map<string, number>>, bag: string, target: string, found = false) {
