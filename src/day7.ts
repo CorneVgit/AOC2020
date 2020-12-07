@@ -18,7 +18,7 @@ function main() {
     }
 
     for (const bag of bags.keys()) {
-        if (check_bag(bags, bag) > 0) count++;
+        count += Number(has_bag(bags, bag, "shiny gold"));
     }
 
     console.log(count);
@@ -26,20 +26,20 @@ function main() {
 
 }
 
-function check_bag(bags: Map<string, Map<string, number>>, bag: string, count = 0) {
+function has_bag(bags: Map<string, Map<string, number>>, bag: string, target: string, found = false) {
     const current_bag = bags.get(bag);
 
     if (current_bag) {
-        if (current_bag.has("shiny gold")) {
-            count++;
+        if (current_bag.has(target)) {
+            found = true;
         } else if (current_bag.size > 0) {
             for (const b of current_bag.keys()) {
-                count += check_bag(bags, b, count);
+                found = has_bag(bags, b, target, found);
             }
         }
     }
 
-    return count;
+    return found;
 }
 
 function count_bags(bags: Map<string, Map<string, number>>, bag: string, total_amount = -1) {
