@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 function main() {
-    const input = fs.readFileSync("data/input_day7_test.txt").toString("ascii").split("\n");
+    const input = fs.readFileSync("data/input_day7.txt").toString("ascii").split("\n");
     const bags = new Map<string, Map<string, number>>();
     let count = 0;
 
@@ -22,6 +22,8 @@ function main() {
     }
 
     console.log(count);
+    console.log(count_bags(bags, "shiny gold"));
+
 }
 
 function check_bag(bags: Map<string, Map<string, number>>, bag: string, count = 0) {
@@ -38,6 +40,26 @@ function check_bag(bags: Map<string, Map<string, number>>, bag: string, count = 
     }
 
     return count;
+}
+
+function count_bags(bags: Map<string, Map<string, number>>, bag: string, total_amount = -1) {
+    const current_bag = bags.get(bag);
+
+    if (current_bag !== undefined) {
+        if (current_bag.size !== 0) {
+            for (const b of current_bag.keys()) {
+                const amount = current_bag.get(b);
+
+                if (amount !== undefined) {
+                    total_amount += amount * count_bags(bags, b, 0);
+                }
+            }
+        } else {
+            return 1;
+        }
+    }
+
+    return total_amount + 1;
 }
 
 main();
