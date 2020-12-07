@@ -12,21 +12,17 @@ function main() {
     console.log(count);
 }
 
-interface Passport {
-    [key: string]: string,
-}
-
 function make_passports(input: string[]) {
-    const passports: Passport[] = [];
+    const passports: Map<string, string>[] = [];
     let passport_raw = "";
 
     for (const str of input) {
         if (str === "") {
-            const passport: Passport = {};
+            const passport = new Map<string, string>();
 
             passport_raw.trim().split(" ").forEach(element => {
                 const [key, value] = element.split(":");
-                passport[key] = value;
+                passport.set(key, value);
             });
 
             passports.push(passport);
@@ -39,14 +35,14 @@ function make_passports(input: string[]) {
     return passports;
 }
 
-function validate_passport(passport: Passport) {
-    if (!("byr" in passport && validate_byr(passport["byr"]))) return false;
-    if (!("iyr" in passport && validate_iyr(passport["iyr"]))) return false;
-    if (!("eyr" in passport && validate_eyr(passport["eyr"]))) return false;
-    if (!("hgt" in passport && validate_hgt(passport["hgt"]))) return false;
-    if (!("hcl" in passport && validate_hcl(passport["hcl"]))) return false;
-    if (!("ecl" in passport && validate_ecl(passport["ecl"]))) return false;
-    if (!("pid" in passport && validate_pid(passport["pid"]))) return false;
+function validate_passport(passport: Map<string, string>) {
+    if (!(passport.has("byr") && validate_byr(passport.get("byr") || ""))) return false;
+    if (!(passport.has("iyr") && validate_iyr(passport.get("iyr") || ""))) return false;
+    if (!(passport.has("eyr") && validate_eyr(passport.get("eyr") || ""))) return false;
+    if (!(passport.has("hgt") && validate_hgt(passport.get("hgt") || ""))) return false;
+    if (!(passport.has("hcl") && validate_hcl(passport.get("hcl") || ""))) return false;
+    if (!(passport.has("ecl") && validate_ecl(passport.get("ecl") || ""))) return false;
+    if (!(passport.has("pid") && validate_pid(passport.get("pid") || ""))) return false;
 
     return true;
 }
