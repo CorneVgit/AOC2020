@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 function main() {
-    const number_array = fs.readFileSync("data/input_day1.txt").toString("ascii").split("\n").map(Number);
+    const number_array = fs.readFileSync("data/input_day1.txt").toString("ascii").trim().split("\n").map(Number);
     let f1 = false;
     let f2 = false;
 

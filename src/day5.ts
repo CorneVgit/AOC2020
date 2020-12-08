@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 function main() {
-    const input = fs.readFileSync("data/input_day5.txt").toString("ascii").split("\n");
+    const input = fs.readFileSync("data/input_day5.txt").toString("ascii").trim().split("\n");
     const seat_ids: number[] = [];
     let highest_seat_id = 0;
 

@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 function main() {
-    const input = fs.readFileSync("data/input_day3.txt").toString("ascii").split("\n");
+    const input = fs.readFileSync("data/input_day3.txt").toString("ascii").trim().split("\n");
     const slopes = [{ x: 1, y: 1 }, { x: 3, y: 1 }, { x: 5, y: 1 }, { x: 7, y: 1 }, { x: 1, y: 2 }];
 
     let count = 1;

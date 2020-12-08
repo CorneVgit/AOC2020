@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 function main() {
-    const input = fs.readFileSync("data/input_day2.txt").toString("ascii").split("\n");
+    const input = fs.readFileSync("data/input_day2.txt").toString("ascii").trim().split("\n");
     let valid_count1 = 0;
     let valid_count2 = 0;
 
