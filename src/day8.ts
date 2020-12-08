@@ -4,11 +4,13 @@ function main() {
     const input = fs.readFileSync("data/input_day8.txt").toString("ascii").trim().split("\n");
 
     for (let n = 1; n < input.length; n++) {
-        execute(input, n, 0);
-    }
-
-    for (let j = 1; j < input.length; j++) {
-        execute(input, 0, j);
+        let [found, accumulator] = execute(input, n, 0);
+        [found, accumulator] = execute(input, 0, n);
+        
+        if (found) {
+            console.log(accumulator);
+            break;
+        }
     }
 }
 
@@ -20,7 +22,7 @@ function execute(input: string[], nop_switch: number, jmp_switch: number, instru
 
     while (instruction_pointer < input.length) {
         if (executed_list[instruction_pointer] === true) {
-            return;
+            return [false, 0];
         }
 
         executed_list[instruction_pointer] = true;
@@ -34,7 +36,7 @@ function execute(input: string[], nop_switch: number, jmp_switch: number, instru
                     instruction_pointer += Number(operand);
                     break;
                 }
-                
+
                 instruction_pointer++;
                 break;
             case "acc":
@@ -54,8 +56,7 @@ function execute(input: string[], nop_switch: number, jmp_switch: number, instru
         }
     }
 
-    console.log(accumulator);
-    return;
+    return [true, accumulator];
 }
 
 main();
