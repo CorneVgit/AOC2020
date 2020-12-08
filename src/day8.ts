@@ -29,13 +29,13 @@ function execute(input: string[], nop_switch: number, jmp_switch: number, instru
         switch (opcode) {
             case "nop":
                 nop_count++;
-                instruction_pointer++;
 
                 if (nop_count === nop_switch) {
-                    instruction_pointer--;
                     instruction_pointer += Number(operand);
+                    break;
                 }
-
+                
+                instruction_pointer++;
                 break;
             case "acc":
                 accumulator += Number(operand);
@@ -43,13 +43,13 @@ function execute(input: string[], nop_switch: number, jmp_switch: number, instru
                 break;
             case "jmp":
                 jmp_count++;
-                instruction_pointer += Number(operand);
 
                 if (jmp_count === jmp_switch) {
-                    instruction_pointer -= Number(operand);
                     instruction_pointer++;
+                    break;
                 }
 
+                instruction_pointer += Number(operand);
                 break;
         }
     }
