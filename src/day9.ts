@@ -4,9 +4,9 @@ function main() {
     const number_array = fs.readFileSync("data/input_day9.txt").toString("ascii").trim().split("\n").map(Number);
 
     for (let i = 25; i < number_array.length; i++) {
-        const [found, target] = find_sum(number_array.slice(i - 25, i), number_array[i]);
+        const target = find_sum(number_array.slice(i - 25, i), number_array[i]);
 
-        if (!found) {
+        if (target) {
             console.log(target);
 
             const contiguous_range = find_contiguous_range(number_array, target);
@@ -20,18 +20,16 @@ function main() {
     }
 }
 
-function find_sum(number_array: number[], target: number): [boolean, number] {
-    let found = false;
-
+function find_sum(number_array: number[], target: number) {
     for (let i = 0; i < number_array.length; i++) {
         for (let j = i + 1; j < number_array.length; j++) {
             if (number_array[i] + number_array[j] === target) {
-                found = true;
+                return;
             }
         }
     }
 
-    return [found, target];
+    return target;
 }
 
 function find_contiguous_range(number_array: number[], target: number) {
