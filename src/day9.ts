@@ -9,12 +9,12 @@ function main() {
         if (!found) {
             console.log(target);
 
-            const [found, min, max] = find_contiguous_range(number_array, target);
+            const contiguous_range = find_contiguous_range(number_array, target);
 
-            if (found) {
-                console.log(min + max);
+            if (contiguous_range) {
+                console.log(Math.min(...contiguous_range) + Math.max(...contiguous_range));
             }
-            
+
             break;
         }
     }
@@ -34,7 +34,7 @@ function find_sum(number_array: number[], target: number): [boolean, number] {
     return [found, target];
 }
 
-function find_contiguous_range(number_array: number[], target: number): [boolean, number, number] {
+function find_contiguous_range(number_array: number[], target: number) {
     for (let i = 0; i < number_array.length; i++) {
         const contiguous_range: number[] = [];
 
@@ -43,12 +43,10 @@ function find_contiguous_range(number_array: number[], target: number): [boolean
             contiguous_range.push(number_array[j]);
 
             if (sum === target && number_array[j] !== target) {
-                return [true, Math.min(...contiguous_range), Math.max(...contiguous_range)];
+                return contiguous_range;
             }
         }
     }
-
-    return [false, 0, 0];
 }
 
 main();
