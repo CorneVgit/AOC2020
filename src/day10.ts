@@ -3,11 +3,10 @@ import fs from 'fs';
 function main() {
     const input = fs.readFileSync("data/input_day10.txt").toString("ascii").trim().split("\n").map(Number);
     const number_array = [0, ...input.sort((a, b) => { return a - b; }), input[input.length - 1] + 3];
-
     const map = new Map<number, [number[], number]>();
-
     let count1 = 0;
     let count3 = 0;
+
     for (let i = 0; i < number_array.length; i++) {
         if (number_array[i + 1] - number_array[i] === 1) {
             count1++;
@@ -15,30 +14,32 @@ function main() {
             count3++;
         }
 
-        const a: number[] = [];
-        
+        const nodes: number[] = [];
+
         for (let j = i - 1; number_array[i] - number_array[j] <= 3; j--) {
-            a.push(number_array[j]);
+            nodes.push(number_array[j]);
         }
 
-        map.set(number_array[i], [a, 1]);
+        map.set(number_array[i], [nodes, 0]);
     }
 
     let result = 0;
-    for (const [k, [a,]] of map) {
-        result = 0;
+    for (const [key, [nodes,]] of map) {
+        if (nodes.length === 0) {
+            result = 1;
+        } else {
+            result = 0;
 
-        if (a.length === 0) continue;
-
-        for (const n of a) {
-            const t = map.get(n);
-            if (t) {
-                const [, v] = t;
-                result += v;
+            for (const n of nodes) {
+                const t = map.get(n);
+                if (t) {
+                    const [, arrangements] = t;
+                    result += arrangements;
+                }
             }
         }
 
-        map.set(k, [a, result]);
+        map.set(key, [nodes, result]);
     }
 
     console.log(count1 * count3);
