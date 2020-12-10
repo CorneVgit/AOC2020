@@ -6,6 +6,7 @@ function main() {
     const map = new Map<number, [number[], number]>();
     let count1 = 0;
     let count3 = 0;
+    let result = 1;
 
     for (let i = 0; i < number_array.length; i++) {
         if (number_array[i + 1] - number_array[i] === 1) {
@@ -20,14 +21,7 @@ function main() {
             nodes.push(number_array[j]);
         }
 
-        map.set(number_array[i], [nodes, 0]);
-    }
-
-    let result = 0;
-    for (const [key, [nodes,]] of map) {
-        if (nodes.length === 0) {
-            result = 1;
-        } else {
+        if (nodes.length) {
             result = 0;
 
             for (const n of nodes) {
@@ -39,7 +33,7 @@ function main() {
             }
         }
 
-        map.set(key, [nodes, result]);
+        map.set(number_array[i], [nodes, result]);
     }
 
     console.log(count1 * count3);
