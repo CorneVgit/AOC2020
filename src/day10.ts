@@ -31,9 +31,9 @@ function main() {
             result = 0;
 
             for (const n of nodes) {
-                const t = map.get(n);
-                if (t) {
-                    const [, arrangements] = t;
+                const node = map.get(n);
+                if (node) {
+                    const [, arrangements] = node;
                     result += arrangements;
                 }
             }
