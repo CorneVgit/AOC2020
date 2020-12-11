@@ -10,8 +10,8 @@ function main() {
     }
     area.push(new Array(input[0].length + 2).fill('.'));
 
-    console.log(count_occupied(iterate_rules(area, 4, 1, rules)));
-    console.log(count_occupied(iterate_rules(area, 5, area.length, rules)));
+    console.log(count_occupied(iterate_rules(area, 4, 1)));
+    console.log(count_occupied(iterate_rules(area, 5, area.length)));
 }
 
 function rules(area: string[][], max_occupied: number, max_neighbour_range: number) {
@@ -48,7 +48,7 @@ function rules(area: string[][], max_occupied: number, max_neighbour_range: numb
     return new_area;
 }
 
-function iterate_rules(area: string[][], max_occupied: number, max_neighbour_range: number, rules: (area: string[][], max_occupied: number, max_neighbour_range: number) => string[][]) {
+function iterate_rules(area: string[][], max_occupied: number, max_neighbour_range: number) {
     let prev_area = new Array<Array<string>>(area.length).fill(Array<string>().fill('.'));
     while (!compare_area(area, prev_area)) {
         prev_area = area;
