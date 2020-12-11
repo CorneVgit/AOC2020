@@ -10,20 +10,20 @@ function main() {
     }
     area.push(new Array(input[0].length + 2).fill('.'));
 
-    console.log(count_occupied(iterate_rules(area, rules1)));
-    console.log(count_occupied(iterate_rules(area, rules2)));
+    console.log(count_occupied(iterate_rules(area, 4, 1, rules)));
+    console.log(count_occupied(iterate_rules(area, 5, area.length, rules)));
 }
 
-function rules1(area: string[][]) {
+function rules(area: string[][], max_occupied: number, max_neighbour_range: number) {
     const new_area = new Array<Array<string>>();
 
     for (let y = 0; y < area.length; y++) {
         new_area[y] = [];
 
         for (let x = 0; x < area[0].length; x++) {
-            switch(area[y][x]) {
+            switch (area[y][x]) {
                 case 'L':
-                    if (count_neighbours(check_neighbours(area, y, x, '#', 1)) === 0) {
+                    if (count_neighbours(check_neighbours(area, y, x, '#', max_neighbour_range)) === 0) {
                         new_area[y][x] = '#';
                         break;
                     }
@@ -31,7 +31,7 @@ function rules1(area: string[][]) {
                     new_area[y][x] = area[y][x];
                     break;
                 case '#':
-                    if (count_neighbours(check_neighbours(area, y, x, '#', 1)) >= 4) {
+                    if (count_neighbours(check_neighbours(area, y, x, '#', max_neighbour_range)) >= max_occupied) {
                         new_area[y][x] = 'L';
                         break;
                     }
@@ -48,51 +48,17 @@ function rules1(area: string[][]) {
     return new_area;
 }
 
-function rules2(area: string[][]) {
-    const new_area = new Array<Array<string>>();
-
-    for (let y = 0; y < area.length; y++) {
-        new_area[y] = [];
-
-        for (let x = 0; x < area[0].length; x++) {
-            switch(area[y][x]) {
-                case 'L':
-                    if (count_neighbours(check_neighbours(area, y, x, '#')) === 0) {
-                        new_area[y][x] = '#';
-                        break;
-                    }
-
-                    new_area[y][x] = area[y][x];
-                    break;
-                case '#':
-                    if (count_neighbours(check_neighbours(area, y, x, '#')) >= 5) {
-                        new_area[y][x] = 'L';
-                        break;
-                    }
-
-                    new_area[y][x] = area[y][x];
-                    break;
-                default:
-                    new_area[y][x] = area[y][x];
-                    break;
-            }
-        }
-    }
-
-    return new_area;
-}
-
-function iterate_rules(area: string[][], rules: (area: string[][]) => string[][]) {
+function iterate_rules(area: string[][], max_occupied: number, max_neighbour_range: number, rules: (area: string[][], max_occupied: number, max_neighbour_range: number) => string[][]) {
     let prev_area = new Array<Array<string>>(area.length).fill(Array<string>().fill('.'));
-    while(!compare_area(area, prev_area)) {
+    while (!compare_area(area, prev_area)) {
         prev_area = area;
-        area = rules(area);
+        area = rules(area, max_occupied, max_neighbour_range);
     }
 
     return area;
 }
 
-function check_neighbours(area: string[][], y_pos: number, x_pos: number, target: string, max_range = area[0].length, range = 1) {
+function check_neighbours(area: string[][], y_pos: number, x_pos: number, target: string, max_range: number, range = 1) {
     let directions = new Array<boolean>(9).fill(false);
 
     if (range < max_range) directions = check_neighbours(area, y_pos, x_pos, target, max_range, range + 1);
@@ -100,10 +66,12 @@ function check_neighbours(area: string[][], y_pos: number, x_pos: number, target
     let count = 0;
     for (let y = y_pos - range; y <= y_pos + range; y += range) {
         for (let x = x_pos - range; x <= x_pos + range; x += range, count++) {
-            if (area[y] && area[y][x] === target && !(x === x_pos && y === y_pos)) {
-                directions[count] = true;
-            } else if (area[y] && area[y][x] === 'L' && !(x === x_pos && y === y_pos)) {
-                directions[count] = false;
+            if (area[y] && !(x === x_pos && y === y_pos)) {
+                if (area[y][x] === target) {
+                    directions[count] = true;
+                } else if (area[y][x] === 'L') {
+                    directions[count] = false;
+                }
             }
         }
     }
