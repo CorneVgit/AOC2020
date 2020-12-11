@@ -2,7 +2,7 @@ import fs from 'fs';
 
 function main() {
     const input = fs.readFileSync("data/input_day11.txt").toString("ascii").split("\n");
-    let area = new Array<Array<string>>();
+    const area = new Array<Array<string>>();
 
     area.push(new Array(input[0].length + 2).fill('.'));
     for (const s of input) {
@@ -10,16 +10,11 @@ function main() {
     }
     area.push(new Array(input[0].length + 2).fill('.'));
 
-    let prev_area = new Array<Array<string>>(area.length).fill(Array<string>().fill('.'));
-    while(!compare_area(area, prev_area)) {
-        prev_area = area;
-        area = run_rules(area);
-    }
-
-    console.log(count_occupied(area));
+    console.log(count_occupied(iterate_rules(area, rules1)));
+    console.log(count_occupied(iterate_rules(area, rules2)));
 }
 
-function run_rules(area: Array<Array<string>>) {
+function rules1(area: string[][]) {
     const new_area = new Array<Array<string>>();
 
     for (let y = 0; y < area.length; y++) {
@@ -28,7 +23,7 @@ function run_rules(area: Array<Array<string>>) {
         for (let x = 0; x < area[0].length; x++) {
             switch(area[y][x]) {
                 case 'L':
-                    if (check_neighbours(get_neighbours(area, y, x), '#') === 0) {
+                    if (count_neighbours(check_neighbours(area, y, x, '#', 1)) === 0) {
                         new_area[y][x] = '#';
                         break;
                     }
@@ -36,7 +31,7 @@ function run_rules(area: Array<Array<string>>) {
                     new_area[y][x] = area[y][x];
                     break;
                 case '#':
-                    if (check_neighbours(get_neighbours(area, y, x), '#') >= 4) {
+                    if (count_neighbours(check_neighbours(area, y, x, '#', 1)) >= 4) {
                         new_area[y][x] = 'L';
                         break;
                     }
@@ -53,34 +48,80 @@ function run_rules(area: Array<Array<string>>) {
     return new_area;
 }
 
-function get_neighbours(area: Array<Array<string>>, y_pos: number, x_pos: number) {
-    const neighbours = new Array<Array<string>>();
+function rules2(area: string[][]) {
+    const new_area = new Array<Array<string>>();
 
-    for (let y = y_pos - 1, ny = 0; y <= y_pos + 1; y++, ny++) {
-        neighbours[ny] = [];
-        for (let x = x_pos - 1; x <= x_pos + 1; x++) {
-            neighbours[ny].push(area[y][x]);
-        }
-    }
+    for (let y = 0; y < area.length; y++) {
+        new_area[y] = [];
 
-    return neighbours;
-}
+        for (let x = 0; x < area[0].length; x++) {
+            switch(area[y][x]) {
+                case 'L':
+                    if (count_neighbours(check_neighbours(area, y, x, '#')) === 0) {
+                        new_area[y][x] = '#';
+                        break;
+                    }
 
-function check_neighbours(area: Array<Array<string>>, target: string) {
-    let target_count = 0;
+                    new_area[y][x] = area[y][x];
+                    break;
+                case '#':
+                    if (count_neighbours(check_neighbours(area, y, x, '#')) >= 5) {
+                        new_area[y][x] = 'L';
+                        break;
+                    }
 
-    for (let y = 0; y < 3; y++) {
-        for (let x = 0; x < 3; x++) {
-            if (area[y][x] === target && !(x === 1 && y === 1)) {
-                target_count++;
+                    new_area[y][x] = area[y][x];
+                    break;
+                default:
+                    new_area[y][x] = area[y][x];
+                    break;
             }
         }
     }
 
+    return new_area;
+}
+
+function iterate_rules(area: string[][], rules: (area: string[][]) => string[][]) {
+    let prev_area = new Array<Array<string>>(area.length).fill(Array<string>().fill('.'));
+    while(!compare_area(area, prev_area)) {
+        prev_area = area;
+        area = rules(area);
+    }
+
+    return area;
+}
+
+function check_neighbours(area: string[][], y_pos: number, x_pos: number, target: string, max_range = area[0].length, range = 1) {
+    let directions = new Array<boolean>(9).fill(false);
+
+    if (range < max_range) directions = check_neighbours(area, y_pos, x_pos, target, max_range, range + 1);
+
+    let count = 0;
+    for (let y = y_pos - range; y <= y_pos + range; y += range) {
+        for (let x = x_pos - range; x <= x_pos + range; x += range, count++) {
+            if (area[y] && area[y][x] === target && !(x === x_pos && y === y_pos)) {
+                directions[count] = true;
+            } else if (area[y] && area[y][x] === 'L' && !(x === x_pos && y === y_pos)) {
+                directions[count] = false;
+            }
+        }
+    }
+
+    return directions;
+}
+
+function count_neighbours(directions: boolean[]) {
+    let target_count = 0;
+
+    directions.forEach((d) => {
+        if (d) target_count++;
+    });
+
     return target_count;
 }
 
-function compare_area(area1: Array<Array<string>>, area2: Array<Array<string>>) {
+function compare_area(area1: string[][], area2: string[][]) {
     for (let y = 0; y < area1.length; y++) {
         for (let x = 0; x < area1[0].length; x++) {
             if (area1[y][x] !== area2[y][x]) {
@@ -92,7 +133,7 @@ function compare_area(area1: Array<Array<string>>, area2: Array<Array<string>>) 
     return true;
 }
 
-function count_occupied(area: Array<Array<string>>) {
+function count_occupied(area: string[][]) {
     let occupied_count = 0;
 
     for (let y = 0; y < area.length; y++) {
