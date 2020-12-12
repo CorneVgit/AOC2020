@@ -105,8 +105,6 @@ function part2(input: string[]) {
         }
 
         waypoint = new_waypoint;
-
-        console.log(position, waypoint);
     }
 
     console.log((Math.max(position[0], position[2]) - Math.min(position[0], position[2])) + (Math.max(position[1], position[3]) - Math.min(position[1], position[3])));
