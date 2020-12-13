@@ -13,7 +13,6 @@ function main() {
     for (let i = 1; i < busses.length; i++) {
         if (busses[i] === 'x') continue;
         while ((timestamp + i) % Number(busses[i]) !== 0) {
-            console.log(timestamp, n);
             timestamp += n;
         }
         n *= Number(busses[i]);
