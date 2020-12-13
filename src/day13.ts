@@ -7,7 +7,6 @@ function main() {
     const highest_id = Math.max(...busses.filter(x => x !== 'x').map(Number));
     const timestamp_difference = highest_id - Number(input[0]) % highest_id;
 
-
     let n = Number(busses[0]);
     let timestamp = 0;
     for (let i = 1; i < busses.length; i++) {
