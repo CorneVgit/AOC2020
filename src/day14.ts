@@ -94,8 +94,8 @@ function get_sum(locations: Map<string, number>) {
 }
 
 function get_combinations(address: string, addresses: string[] = []) {
-    for (let i = 0; i < address.length; i++) {
-        if (address[i] === 'X') {
+    for (const c of address) {
+        if (c === 'X') {
             addresses.concat(get_combinations(address.replace('X', '0'), addresses));
             addresses.concat(get_combinations(address.replace('X', '1'), addresses));
             return addresses;
