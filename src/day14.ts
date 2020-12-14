@@ -41,7 +41,6 @@ function decode1(masks: Map<string, Map<string, string>>) {
 
             for (let i = 0; i < v.length; i++) {
                 switch (mask[i]) {
-                    case 'X': continue;
                     case '0':
                         v[i] = '0';
                         break;
@@ -71,17 +70,13 @@ function decode2(masks: Map<string, Map<string, string>>) {
                     case 'X':
                         address[i] = 'X';
                         break;
-                    case '0': continue;
                     case '1':
                         address[i] = '1';
                         break;
                 }
             }
 
-            const addresses = get_combinations(address);
-            for (const a of addresses) {
-                locations.set(a, parseInt(v, 2));
-            }
+            for (const a of get_combinations(address.join(''))) locations.set(a, parseInt(v, 2));
         }
     }
 
@@ -98,18 +93,16 @@ function get_sum(locations: Map<string, number>) {
     return sum;
 }
 
-function get_combinations(address: string[], addresses: string[] = []) {
+function get_combinations(address: string, addresses: string[] = []) {
     for (let i = 0; i < address.length; i++) {
         if (address[i] === 'X') {
-            address[i] = '0';
-            addresses.concat(get_combinations(Array.from(address), addresses));
-            address[i] = '1';
-            addresses.concat(get_combinations(Array.from(address), addresses));
+            addresses.concat(get_combinations(address.replace('X', '0'), addresses));
+            addresses.concat(get_combinations(address.replace('X', '1'), addresses));
             return addresses;
         }
     }
 
-    addresses.push(address.join(''));
+    addresses.push(address);
 
     return addresses;
 }
