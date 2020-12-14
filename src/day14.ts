@@ -93,18 +93,18 @@ function get_sum(locations: Map<string, number>) {
     return sum;
 }
 
-function get_combinations(address: string, addresses: string[] = []) {
+function get_combinations(address: string, combinations: string[] = []) {
     for (const c of address) {
         if (c === 'X') {
-            addresses.concat(get_combinations(address.replace('X', '0'), addresses));
-            addresses.concat(get_combinations(address.replace('X', '1'), addresses));
-            return addresses;
+            combinations.concat(get_combinations(address.replace('X', '0'), combinations));
+            combinations.concat(get_combinations(address.replace('X', '1'), combinations));
+            return combinations;
         }
     }
 
-    addresses.push(address);
+    combinations.push(address);
 
-    return addresses;
+    return combinations;
 }
 
 main();
