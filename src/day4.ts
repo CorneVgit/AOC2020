@@ -36,13 +36,13 @@ function make_passports(input: string[]) {
 }
 
 function validate_passport(passport: Map<string, string>) {
-    if (!(passport.has("byr") && validate_byr(passport.get("byr") || ""))) return false;
-    if (!(passport.has("iyr") && validate_iyr(passport.get("iyr") || ""))) return false;
-    if (!(passport.has("eyr") && validate_eyr(passport.get("eyr") || ""))) return false;
-    if (!(passport.has("hgt") && validate_hgt(passport.get("hgt") || ""))) return false;
-    if (!(passport.has("hcl") && validate_hcl(passport.get("hcl") || ""))) return false;
-    if (!(passport.has("ecl") && validate_ecl(passport.get("ecl") || ""))) return false;
-    if (!(passport.has("pid") && validate_pid(passport.get("pid") || ""))) return false;
+    if (!(passport.has("byr") && validate_byr(passport.get("byr") as string))) return false;
+    if (!(passport.has("iyr") && validate_iyr(passport.get("iyr") as string))) return false;
+    if (!(passport.has("eyr") && validate_eyr(passport.get("eyr") as string))) return false;
+    if (!(passport.has("hgt") && validate_hgt(passport.get("hgt") as string))) return false;
+    if (!(passport.has("hcl") && validate_hcl(passport.get("hcl") as string))) return false;
+    if (!(passport.has("ecl") && validate_ecl(passport.get("ecl") as string))) return false;
+    if (!(passport.has("pid") && validate_pid(passport.get("pid") as string))) return false;
 
     return true;
 }
