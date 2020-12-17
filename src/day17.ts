@@ -86,27 +86,19 @@ function count_neighbours(wollah: number, layer: number, row: number, column: nu
 }
 
 function count(m: ndarray<number>) {
-    let count_0 = 0;
-    let count_1 = 0;
+    const count = [0, 0];
     for (let w = 0; w < m.shape[0]; w++) {
         for (let z = 0; z < m.shape[1]; z++) {
             for (let y = 0; y < m.shape[2]; y++) {
                 for (let x = 0; x < m.shape[3]; x++) {
-                    switch (m.get(w, z, y, x)) {
-                        case 0:
-                            count_0++;
-                            break;
-                        case 1:
-                            count_1++;
-                            break;
-                    }
+                    count[m.get(w, z, y, x)]++;
                 }
             }
         }
     }
 
-    console.log(`0:  ${count_0}`);
-    console.log(`1:  ${count_1}`);
+    console.log(`0:  ${count[0]}`);
+    console.log(`1:  ${count[1]}`);
 }
 
 function pretty_print(m: ndarray<number>) {
