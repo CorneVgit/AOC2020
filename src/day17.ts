@@ -34,18 +34,7 @@ function init(input: string[]): ndarray<number> {
 }
 
 function cycle(m: ndarray<number>): ndarray<number> {
-    const t = zeros([...m.shape.map(x => x + 2)]);
-
-    for (let w = 0; w < m.shape[0]; w++) {
-        for (let z = 0; z < m.shape[1]; z++) {
-            for (let y = 0; y < m.shape[2]; y++) {
-                for (let x = 0; x < m.shape[3]; x++) {
-                    t.set(w + 1, z + 1, y + 1, x + 1, m.get(w, z, y, x));
-                }
-            }
-        }
-    }
-
+    const t = expand(m);
     const r = ndarray([...t.data], t.shape);
 
     for (let w = 0; w < t.shape[0]; w++) {
@@ -67,6 +56,22 @@ function cycle(m: ndarray<number>): ndarray<number> {
     }
 
     return r;
+}
+
+function expand(m: ndarray<number>): ndarray<number> {
+    const t = zeros([...m.shape.map(x => x + 2)]);
+
+    for (let w = 0; w < m.shape[0]; w++) {
+        for (let z = 0; z < m.shape[1]; z++) {
+            for (let y = 0; y < m.shape[2]; y++) {
+                for (let x = 0; x < m.shape[3]; x++) {
+                    t.set(w + 1, z + 1, y + 1, x + 1, m.get(w, z, y, x));
+                }
+            }
+        }
+    }
+
+    return t;
 }
 
 function count_neighbours(wollah: number, layer: number, row: number, column: number, m: ndarray<number>): number {
