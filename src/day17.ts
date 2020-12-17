@@ -102,8 +102,8 @@ function count(m: ndarray<number>) {
         }
     }
 
-    console.log(`0:  ${count[0]}`);
-    console.log(`1:  ${count[1]}`);
+    console.log(`inactive : ${count[0]}`);
+    console.log(`active   : ${count[1]}`);
 }
 
 function pretty_print(m: ndarray<number>) {
