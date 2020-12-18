@@ -19,8 +19,7 @@ function evaluate(input: string[], version = 1) {
     let operands: string[] = [];
     let operator = "";
 
-    let i = 0;
-    while (input[i]) {
+    for (let i = 0; i < input.length; i++) {
         if (operands.length === 2) {
             operands = [evaluate([operands[0], operator, operands[1]], version)];
             operator = '';
@@ -48,9 +47,8 @@ function evaluate(input: string[], version = 1) {
                 }
             }
         }
-
-        i++;
     }
+
     if (operands.length === 2) {
         return ((eval(operands[0] + operator + operands[1]) as number)).toString();
     } else {
