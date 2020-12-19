@@ -1,8 +1,11 @@
 .vscode
+.yarn
 .idea
 node_modules
 out
 yarn.lock
+.pnp.js
+.yarnrc.yml
 *.log
 src/template.ts
 *test.txt
